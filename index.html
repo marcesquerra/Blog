@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <script>
+         var defaultLocale = "es";
+         var validLocales = ["ca", "en", "es"]
+         var getFirstBrowserLanguage = function () {
+
+    // internal purpose only
+
+    var nav = window.navigator,
+        browserLanguagePropertyKeys = ['language', 'browserLanguage', 'systemLanguage', 'userLanguage'],
+        i,
+        language;
+
+    // support for HTML 5.1 "navigator.languages"
+    if (Array.isArray(nav.languages)) {
+      for (i = 0; i < nav.languages.length; i++) {
+        language = nav.languages[i];
+        if (language && language.length) {
+          return language;
+        }
+      }
+    }
+
+    // support for other well known properties in browsers
+    for (i = 0; i < browserLanguagePropertyKeys.length; i++) {
+      language = nav[browserLanguagePropertyKeys[i]];
+      if (language && language.length) {
+        return language;
+      }
+    }
+
+
+    return defaultLocale;
+  };
+
+  var extract = function(locale) {
+     if(locale == null || locale == "") return defaultLocale;
+     if(validLocales.indexOf(locale) > -1) return locale;
+     return extract(locale.substring(0, locale.length - 3))
+  };
+
+    var l = extract(getFirstBrowserLanguage());
+    window.location = l + "/index.html"
+        </script>
+    </head>
+</html>
